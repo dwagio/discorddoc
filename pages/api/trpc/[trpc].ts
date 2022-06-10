@@ -3,18 +3,12 @@ import { TRPCError } from '@trpc/server';
 import * as trpcNext from '@trpc/server/adapters/next';
 import { z } from 'zod';
 import { createContext, createRouter } from '../../../server/context';
+import { ping } from '../../../server/handlers';
 
 export const appRouter = createRouter()
-  .query('hello', {
-    input: z
-      .object({
-        text: z.string().nullish(),
-      })
-      .nullish(),
-    resolve({ input }) {
-      return {
-        greeting: `hello ${input?.text ?? 'world'}`,
-      };
+  .query('ping', {
+    resolve() {
+      return ping();
     },
   })
   .query('protected', {
